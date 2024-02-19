@@ -28,7 +28,6 @@ def DMA200(company):
             break
     driver.get(
         f'{c.BASE_URL}/api/company/{company_code}/{c.API_QUERY}')
-    driver.get_screenshot_as_file("screenshot.png")
     content = (driver.find_element(By.CSS_SELECTOR, "body pre").text)
     data = json.loads(content)
     
