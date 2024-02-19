@@ -1,1 +1,1 @@
-URL = "https://www.screener.in/company/"
+URL = "https://www.screener.in/company"
