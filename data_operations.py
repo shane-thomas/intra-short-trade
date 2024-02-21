@@ -23,14 +23,21 @@ def get_file(date):
         zip_ref.extractall()
     os.remove(filename)
     today_file_path = os.path.abspath(filename[0:-4])
+
     return today_file_path
 
 
-def get_dates():
-    # Get today's date
-    today = datetime.today()
-    date_range = []
+def download_files():
+    directory = os.getcwd()  # Get current working directory
 
+    # Delete old existing .csv files
+    csv_files = [f for f in os.listdir(directory) if (f.endswith(".csv") or f.endswith(".zip"))]
+    for f in csv_files:
+        os.remove(os.path.join(directory, f))
+
+    today = datetime.today()  # Get today's date
+    date_range = []
+    today_file = ""
     files_list = []
 
     current_date = today
@@ -39,23 +46,24 @@ def get_dates():
         os.system('cls')
         print(f"{index+1}/20")
 
-        # Check if the current date is a weekday (Monday to Friday)
-        if current_date.weekday() < 5:
+        if current_date.weekday() < 5:  # Check if the current date is a weekday (Monday to Friday)
             date_range.append(current_date)
-
-            #Download file for that particular date if it isn't a holiday
-            try:
+            try:  # Download file for that particular date if it isn't a holiday
                 file_path = get_file(current_date)
                 files_list.append(file_path)
+                if index == 0:
+                    today_file = file_path
                 index += 1
             except Exception as e:
-                
                 print(f"Error getting file for date {current_date}: {e}")
+        current_date -= timedelta(days=1)  # Move to the previous day
 
-        # Move to the previous day
-        current_date -= timedelta(days=1)
-    return files_list
+    # Remove any redundant .zip files of possible holidays
+    zip_files = [f for f in os.listdir(directory) if (f.endswith(".zip"))]
+    for f in zip_files:
+        os.remove(os.path.join(directory, f))
+    return [files_list, today_file]
 
 
 if __name__ == "__main__":
-    print(get_dates())
+    print(download_files())
