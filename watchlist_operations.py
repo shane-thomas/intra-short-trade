@@ -61,8 +61,7 @@ def query(today_file, files_list) -> None:
     df = df.query('CLOSE > 0.95*DMA200 & CLOSE < 1.05*DMA200')
 
     # df = df.query('CLOSE > 1.005*DMA200')
-    del_columns = ['ISIN', 'LOW', 'HIGH', 'OPEN', 'PREVCLOSE', 'TIMESTAMP', 'TOTALTRADES', 'TOTTRDVAL']
-    for col in del_columns:
+    for col in c.DEL_COLUMNNS:
             df.pop(item=col)
     os.remove('output.csv')
     df.to_excel('Results.xlsx', index=False)
