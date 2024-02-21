@@ -63,7 +63,3 @@ def download_files():
     for f in zip_files:
         os.remove(os.path.join(directory, f))
     return [files_list, today_file]
-
-
-if __name__ == "__main__":
-    print(download_files())
